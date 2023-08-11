@@ -64,10 +64,13 @@ class StudentsController extends Controller
     {
         $student = Student::where('id', $id)->first();
         if(isset($student) && !empty($student)){
+            //return response()->json($student, 200);
+
             return response()->json([
                 'status' => 200,
                 'student' => $student
             ], 200);
+            
         }else{
             return response()->json([
                 'status' => 404,
@@ -98,7 +101,7 @@ class StudentsController extends Controller
         }
 
         if(Student::where('id', $id)->exists()){
-            $input = $request->all();
+            $input = $request->except(['id', 'updated_at', 'created_at']);
             $status = Student::where('id', $id)->update($input);
             return response()->json([
                 'status' => 200,
