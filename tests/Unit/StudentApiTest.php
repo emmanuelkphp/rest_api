@@ -38,6 +38,10 @@ class StudentApiTest extends TestCase
     }
 
     public function test_update_student(){
-        
+        $response = $this->putJson('/api/students/6', [
+            'name' => 'new name'
+        ]);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('students', ['name' => 'new name']);
     }
 }
