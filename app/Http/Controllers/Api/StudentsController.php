@@ -28,40 +28,36 @@ class StudentsController extends Controller
     }
 
     public function store(Request $request){
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'course' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-        ]);
+        $data  = $request->all();
+
+        $rules = [
+            'username'  => 'required',
+            'course'    => 'required',
+            'age'       => 'required',
+            'score'     => 'required',
+        ];
+
+        $messages  = [];
+
+        $validator = Validator::make($data, $rules, $messages);
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => 422,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
-        }else{
-            $input = $request->all();
-            $student = Student::create($input);
-
-            if($student){
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'student created successfully',
-                ], 200);
-            }else{
-                return response()->json([
-                    'status' => 500,
-                    'message' => 'something went wrong',
-                ], 200);
-            }
-
+                'status'    => 422,
+                'message'   => 'Validation failed',
+                'errors'    => $validator->errors(),
+            ]);
         }
+
+        $student = Student::create($data);
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'student created successfully',
+        ], 200);
     }
 
-    public function show($id)
-    {
+    public function show($id){
         $student = Student::where('id', $id)->first();
         if(isset($student) && !empty($student)){
             //return response()->json($student, 200);

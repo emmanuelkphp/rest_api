@@ -11,6 +11,9 @@ class Student extends Model
 
     protected $table = 'students';
     protected $fillable = [
-        'name', 'course', 'email', 'phone'
+        'username', 
+        'course', 
+        'age', 
+        'score'
     ];
 }
